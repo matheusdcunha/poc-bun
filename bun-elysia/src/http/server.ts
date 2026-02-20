@@ -1,0 +1,10 @@
+import { app } from "@/app";
+import { router } from "@/http/router";
+
+const PORT = 3008
+
+app.use(router).listen(PORT)
+
+console.log(
+  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+);
