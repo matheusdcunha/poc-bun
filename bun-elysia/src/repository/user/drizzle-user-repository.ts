@@ -30,4 +30,33 @@ export class DrizzleUserRepository implements UserRepository{
 
     return user ?? null
   }
+
+  async update(userId: number, data: Partial<userCreateRequestDTO>): Promise<User> {
+    const { username, email, password } = data
+
+    const valuesToUpdate: Partial<User> = {}
+
+    if (username !== undefined) valuesToUpdate.username = username
+    if (email !== undefined) valuesToUpdate.email = email
+    if (password !== undefined) valuesToUpdate.password = password
+
+    valuesToUpdate.updatedAt = new Date()
+
+    await db
+      .update(users)
+      .set(valuesToUpdate)
+      .where(eq(users.id, userId))
+
+    const [updatedUser] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1)
+
+    if (!updatedUser) {
+      throw new Error("Falha ao atualizar usuário")
+    }
+
+    return updatedUser
+  }
 }

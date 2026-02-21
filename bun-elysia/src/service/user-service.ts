@@ -11,9 +11,7 @@ export class UserService{
 
     const userWithSameEmail = await this.userRepository.findByEmail(email)
 
-    if(userWithSameEmail){
-      throw new UserAlreadyExistError()
-    }
+    if(userWithSameEmail) throw new UserAlreadyExistError()
 
     const userId = await this.userRepository.create(
       {
@@ -39,5 +37,25 @@ export class UserService{
       username: user.username,
       email: user.email
     }
+  }
+
+  async updateUser(userId: number, { email, username, password }: Partial<userCreateRequestDTO>): Promise<number> {
+    let passwordHash: string | undefined = undefined
+
+    const user = await this.userRepository.findById(userId)
+
+    if(!user) throw new UserNotFoundError()
+
+    if(email){
+      const userWithSameEmail = await this.userRepository.findByEmail(email)
+      if(userWithSameEmail) throw new UserAlreadyExistError()
+    }
+
+    if(password){
+      passwordHash = await Bun.password.hash(password)
+    }
+
+    const userUpdated = await this.userRepository.update(userId, {email, username, password: passwordHash})
+    return userUpdated.id
   }
 }

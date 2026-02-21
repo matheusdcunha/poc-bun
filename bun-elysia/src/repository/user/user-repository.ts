@@ -7,4 +7,5 @@ export interface UserRepository{
   create(data: userCreateRequestDTO):Promise<number>
   findById(id: number): Promise<User | null>
   findByEmail(email: string): Promise<User | null>
+  update(userId: number, data: Partial<userCreateRequestDTO>): Promise<User>
 }
