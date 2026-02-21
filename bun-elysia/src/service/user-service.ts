@@ -1,6 +1,7 @@
 import type { UserRepository } from "@/repository/user/user-repository";
-import { userCreateRequestDTO } from "@/dto/users-dtos";
+import { userCreateRequestDTO, type userResponseDTO } from "@/dto/users-dtos";
 import { UserAlreadyExistError } from "@/error/user-already-exist";
+import { UserNotFoundError } from "@/error/user-not-found";
 
 export class UserService{
   constructor( private userRepository: UserRepository){}
@@ -24,5 +25,19 @@ export class UserService{
     )
 
     return userId
+  }
+
+  async findUserById(id: number): Promise<userResponseDTO>{
+    const user = await this.userRepository.findById(id)
+
+    if(!user){
+      throw new UserNotFoundError()
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email
+    }
   }
 }

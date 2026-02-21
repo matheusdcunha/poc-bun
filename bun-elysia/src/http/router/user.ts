@@ -8,6 +8,11 @@ export const userCreateBodySchema = z.object({
   password: z.string("Senha muito curta, deve ter >= 3 caracteres").min(3)
 })
 
+const userParamsSchema = z.object({
+  id: z.string().regex(/^\d+$/, "Id deve ser um valor numérico")
+})
+
+
 export const user = new Elysia({ prefix: "/user"}).post("/",
   async ({ body, status, set })=>{
     
@@ -21,5 +26,17 @@ export const user = new Elysia({ prefix: "/user"}).post("/",
   },
   {
     body: userCreateBodySchema
+  }
+).get("/:id",
+  async ({ params, status })=>{
+   
+    const service = makeUserService()
+
+    const user = await service.findUserById(Number(params.id))
+
+    return status(200, user)
+  },
+  {
+    params: userParamsSchema
   }
 )

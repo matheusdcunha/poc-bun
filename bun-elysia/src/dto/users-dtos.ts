@@ -4,3 +4,9 @@ export interface userCreateRequestDTO{
   password: string,
   createdAt: Date
 }
+
+export interface userResponseDTO{
+  id: number,
+  username: string,
+  email: string
+}
