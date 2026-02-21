@@ -1,5 +1,6 @@
 import type { UserRepository } from "@/repository/user/user-repository";
 import { userCreateRequestDTO } from "@/dto/users-dtos";
+import { UserAlreadyExistError } from "@/error/user-already-exist";
 
 export class UserService{
   constructor( private userRepository: UserRepository){}
@@ -7,12 +8,11 @@ export class UserService{
   async createUser({email, username, password}: Omit<userCreateRequestDTO, "createdAt">): Promise<number>{
     const password_hash= await Bun.password.hash(password)
 
-    // TODO Adicionar validação de usuário existente
-    // const userWithSameEmail = await this.userRepository.findByEmail(email)
+    const userWithSameEmail = await this.userRepository.findByEmail(email)
 
-    // if(userWithSameEmail){
-    //   throw new Error("Email já cadastrado")
-    // }
+    if(userWithSameEmail){
+      throw new UserAlreadyExistError()
+    }
 
     const userId = await this.userRepository.create(
       {
