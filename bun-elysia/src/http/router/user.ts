@@ -31,6 +31,11 @@ export const user = new Elysia({ prefix: "/user"}).post("/",
     return status(201)
   },
   {
+    detail: {
+      operationId: "createUser",
+      summary: "Cria um novo usuário",
+      tags: ["Users"],
+    },
     body: userCreateBodySchema
   }
 ).get("/:id",
@@ -43,6 +48,11 @@ export const user = new Elysia({ prefix: "/user"}).post("/",
     return status(200, user)
   },
   {
+    detail:{
+      operationId: "getUserById",
+      summary: "Busca um usuário por ID",
+      tags:["Users"]
+    },
     params: userParamsSchema
   }
 ).put("/:id", async ({ body, params, status, set})=>{
@@ -53,10 +63,29 @@ export const user = new Elysia({ prefix: "/user"}).post("/",
 
   set.headers["location"] = `/user/${userId}`
 
-  return status(200)
+  return status(204)
 },
 {
+  detail:{
+  operationId: "updateUserById",
+  summary: "Atualiza informações de um usuário",
+  tags:["Users"]
+},
   body: userUpdateBodySchema,
   params: userParamsSchema
 }
-)
+).delete("/:id", async ({params, status})=>{
+
+  const service = makeUserService()
+
+  await service.removeUser(Number(params.id))
+
+  return status(204)
+}, {
+  detail:{
+    operationId: "deleteUserById",
+    summary: "Remove um usuário",
+    tags:["Users"]
+  },
+  params: userParamsSchema
+})

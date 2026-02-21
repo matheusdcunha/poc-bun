@@ -8,4 +8,5 @@ export interface UserRepository{
   findById(id: number): Promise<User | null>
   findByEmail(email: string): Promise<User | null>
   update(userId: number, data: Partial<userCreateRequestDTO>): Promise<User>
+  remove(userId: number): Promise<void>
 }

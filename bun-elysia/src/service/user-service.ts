@@ -58,4 +58,12 @@ export class UserService{
     const userUpdated = await this.userRepository.update(userId, {email, username, password: passwordHash})
     return userUpdated.id
   }
+
+  async removeUser(userId: number): Promise<void>{
+    const user = await this.userRepository.findById(userId)
+
+    if(!user) throw new UserNotFoundError()
+
+    await this.userRepository.remove(userId)
+  }
 }
