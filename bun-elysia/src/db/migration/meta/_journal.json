@@ -15,6 +15,13 @@
       "when": 1771647413789,
       "tag": "0001_freezing_captain_america",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1771651313619,
+      "tag": "0002_worthless_miracleman",
+      "breakpoints": true
     }
   ]
 }
