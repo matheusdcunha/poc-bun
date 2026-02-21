@@ -8,6 +8,13 @@
       "when": 1771640867075,
       "tag": "0000_slim_korath",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1771647413789,
+      "tag": "0001_freezing_captain_america",
+      "breakpoints": true
     }
   ]
 }

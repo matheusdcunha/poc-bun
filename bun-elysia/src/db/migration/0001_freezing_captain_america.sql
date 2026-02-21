@@ -1,0 +1,1 @@
+ALTER TABLE `tb_users` MODIFY COLUMN `user_id` int AUTO_INCREMENT NOT NULL;
