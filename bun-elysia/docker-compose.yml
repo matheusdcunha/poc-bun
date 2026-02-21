@@ -1,0 +1,23 @@
+services:
+  poc-bun-db:
+    image: mysql:8.0
+    container_name: poc-bun-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: docker_root
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      MYSQL_DATABASE: poc-bun
+    ports:
+      - "3306:3306"
+    volumes:
+      - poc_bun_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  poc_bun_data:

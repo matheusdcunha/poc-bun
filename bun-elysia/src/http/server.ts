@@ -1,7 +1,8 @@
 import { app } from "@/app";
+import { env } from "@/env";
 import { router } from "@/http/router";
 
-const PORT = 3008
+const PORT = env.PORT
 
 app.use(router).listen(PORT)
 

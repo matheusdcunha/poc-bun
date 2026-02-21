@@ -3,13 +3,20 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/http/server.ts"
+    "dev": "bun run --watch src/http/server.ts",
+    "db:generate": "bun --env-file .env --bun drizzle-kit generate",
+    "db:migrate": "bun --env-file .env --bun drizzle-kit migrate"
   },
   "dependencies": {
-    "elysia": "1.4.25"
+    "drizzle-orm": "^0.45.1",
+    "elysia": "1.4.25",
+    "mysql2": "^3.17.4",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "bun-types": "1.3.9"
+    "bun-types": "1.3.9",
+    "drizzle-kit": "^0.31.9",
+    "tsx": "^4.21.0"
   },
   "module": "src/index.js"
 }
