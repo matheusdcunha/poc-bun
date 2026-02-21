@@ -2,6 +2,7 @@ import { describe, expect, it, mock } from "bun:test"
 
 import type { userCreateRequestDTO } from "@/dto/users-dtos"
 import { UserAlreadyExistError } from "@/error/user-already-exist"
+import { UserNotFoundError } from "@/error/user-not-found"
 import type { User, UserRepository } from "@/repository/user/user-repository"
 import { UserService } from "@/service/user-service"
 
@@ -22,6 +23,10 @@ describe("UserService - Create User", () => {
       findByEmail: findByEmailMock,
       create: createMock,
       findById: async () => null,
+      update: async () => {
+        throw new Error("não deveria chamar update")
+      },
+      remove: async () => {},
     }
 
     const sut = new UserService(userRepository)
@@ -60,6 +65,10 @@ describe("UserService - Create User", () => {
       findByEmail: findByEmailMock,
       create: createMock,
       findById: async () => null,
+      update: async () => {
+        throw new Error("não deveria chamar update")
+      },
+      remove: async () => {},
     }
 
     const sut = new UserService(userRepository)
@@ -76,6 +85,49 @@ describe("UserService - Create User", () => {
   })
 })
 
-describe.skip("UserService - Get User", ()=> {
-  
+describe("UserService - Get User", ()=> {
+  it("deve retornar usuário quando encontrar pelo id", async () => {
+    const existingUser: User = {
+      id: 10,
+      username: "matheus",
+      email: "matheus@example.com",
+      password: "hash",
+      createdAt: new Date(),
+      updatedAt: null,
+    }
+
+    const userRepository: UserRepository = {
+      findByEmail: async () => null,
+      create: async () => 1,
+      findById: async (id: number) => (id === 10 ? existingUser : null),
+      update: async () => existingUser,
+      remove: async () => {},
+    }
+
+    const sut = new UserService(userRepository)
+
+    const user = await sut.findUserById(10)
+
+    expect(user).toEqual({
+      id: 10,
+      username: "matheus",
+      email: "matheus@example.com",
+    })
+  })
+
+  it("deve lançar erro quando não encontrar usuário pelo id", async () => {
+    const userRepository: UserRepository = {
+      findByEmail: async () => null,
+      create: async () => 1,
+      findById: async () => null,
+      update: async () => {
+        throw new Error("não deveria chamar update")
+      },
+      remove: async () => {},
+    }
+
+    const sut = new UserService(userRepository)
+
+    await expect(sut.findUserById(999)).rejects.toBeInstanceOf(UserNotFoundError)
+  })
 })
