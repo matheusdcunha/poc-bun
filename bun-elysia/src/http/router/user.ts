@@ -19,7 +19,8 @@ const userParamsSchema = z.object({
 })
 
 
-export const user = new Elysia({ prefix: "/user"}).post("/",
+export const user = new Elysia({ prefix: "/user"})
+.post("/",
   async ({ body, status, set })=>{
     
     const service = makeUserService()
