@@ -3,9 +3,11 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"bun build ./src/http/server.ts --compile --outfile server",
     "dev": "bun run --watch src/http/server.ts",
     "db:generate": "bun --env-file .env --bun drizzle-kit generate",
     "db:migrate": "bun --env-file .env --bun drizzle-kit migrate"
+
   },
   "dependencies": {
     "drizzle-orm": "^0.45.1",

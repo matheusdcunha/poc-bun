@@ -13,3 +13,15 @@ bun run dev
 ```
 
 Open http://localhost:3000/ with your browser to see the result.
+
+## Comando para rodar fazer o build e rodar o container
+
+Build
+```sh
+docker build -t meu-bun .
+```
+
+Run
+```sh
+docker run -p 8080:8080 --env-file ./.env meu-bun
+```
